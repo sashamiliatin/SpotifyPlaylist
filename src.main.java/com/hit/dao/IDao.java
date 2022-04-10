@@ -6,8 +6,9 @@ import java.util.List;
 
 public interface IDao <T> {
 
-    List<Song> getGame(String searchVal);
-    void saveSong(T t);
-    void updateSong(String songName, String updateVal);
-    void deleteSong(String songName);
+    List<Song> searchSongs(String searchVal)throws Exception;
+    boolean saveSong(T t)throws Exception;
+    void updateSong(String songName, String updateVal)throws Exception;
+    void deleteSong(Song song)throws Exception;
+    List<Song> getAllSongs()throws Exception;
 }

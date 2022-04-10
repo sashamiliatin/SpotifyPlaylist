@@ -40,21 +40,19 @@ public class Song implements Serializable {
         SongLink = songLink;
     }
 
-    public Song(String songArtist, String songName, String songGenre, String songLink) {
+    public Song(String songName,String songArtist,  String songGenre, String songLink) {
         SongArtist = songArtist;
         SongName = songName;
         SongGenre = songGenre;
         SongLink = songLink;
     }
 
+    public Song() {
+    }
+
     @Override
     public String toString() {
-        return "Song{" +
-                ", Name='" + SongName + '\'' +
-                ", Artist='" + SongArtist + '\'' +
-                ", Category='" + SongGenre + '\'' +
-                ", Link='" + SongLink + '\'' +
-                '}';
+        return SongName+";"+SongArtist+";"+SongGenre+";"+SongLink;
     }
 
     @Override

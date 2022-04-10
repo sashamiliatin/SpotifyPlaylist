@@ -1,0 +1,2 @@
+Balada1;Sasha1;Shtoot1;LinkToSong1
+Balada2;Sasha2;Shtoot2;LinkToSong2
