@@ -7,9 +7,9 @@ import java.util.Map;
 
 public interface IDao <T> {
 
-    List<Song> searchSongs(String searchVal)throws Exception;
-    void saveSong(T t)throws Exception;
-    void updateSong(String songName, String updateVal)throws Exception;
-    void deleteSong(Song song)throws Exception;
-    Map<String,Song> getAllSongs()throws Exception;
+    List<Song> searchSongs(String searchVal, boolean user)throws Exception;
+    boolean saveSong(T t,boolean user)throws Exception;
+    boolean updateSong(String songName, String updateVal, boolean user)throws Exception;
+    boolean deleteSong(Song song,boolean user)throws Exception;
+    Map<String,Song> getAllSongs(boolean user)throws Exception;
 }
