@@ -26,6 +26,7 @@ public class main {
         service.userAddSong(song1);
         service.userAddSong(song2);
         service.adminAddSong(song);
+        service.adminAddSong(song2);
         songList = service.userSearchSong("sasha");
 //        songList =dao.searchSongs("Sasha");
         System.out.println(songList+"\n");
@@ -33,6 +34,15 @@ public class main {
 //        dao.deleteSong(song);
 //        System.out.println(dao.getAllSongs());
 //        System.out.println(service.);
+
+        service.adminUpdateSong("Name", "blablsa", song2);
+        System.out.println(service.adminGetAllSongs().values());
+
+        service.adminUpdateSong("Link", "1234", song2);
+
+        System.out.println(service.adminGetAllSongs().values());
+
+
     }
 
 }

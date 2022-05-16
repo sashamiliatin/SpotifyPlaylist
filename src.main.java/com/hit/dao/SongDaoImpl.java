@@ -43,7 +43,7 @@ public class SongDaoImpl implements IDao<Song>{
         if (!songList.isEmpty()){
             if (!songList.containsKey(song.getSongLink())){
                 try{
-                     out= new ObjectOutputStream(new FileOutputStream(filePath));
+                    out= new ObjectOutputStream(new FileOutputStream(filePath));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -69,9 +69,56 @@ public class SongDaoImpl implements IDao<Song>{
         }
     }
 
+
     @Override
-    public boolean updateSong(String songName, String updateVal , boolean user) {
-    return true;
+    public boolean updateSong(String field, String updateVal, Song song) {
+
+        Map<String,Song> songList = getAllSongs(false);
+        if (!songList.isEmpty()){
+            if (songList.containsKey(song.getSongLink())){
+                ObjectOutputStream out = null;
+                try {
+                    out = new ObjectOutputStream(new FileOutputStream(admin_path));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (field == "Name"){
+                    song.setSongName(updateVal);
+                    songList.put(song.getSongLink(),song);
+                }
+                else if (field == "Artist") {
+                    song.setSongArtist(updateVal);
+                    songList.put(song.getSongLink(),song);
+                }
+                else if (field == "Genre") {
+                    song.setSongGenre(updateVal);
+                    songList.put(song.getSongLink(),song);
+                }
+                else if (field == "Link") {
+                    Song newSong = new Song(song.getSongName(),song.getSongArtist(),song.getSongGenre(),updateVal);
+                    songList.put(updateVal, newSong);
+                    songList.remove(song.getSongLink());
+                }
+
+                try {
+                    out.writeObject(songList);
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("Filed: "+field+", Of song: "+song.getSongName()+" updated successfully!");
+                return true;
+            }
+            else {
+                System.out.println("No song was found");
+                return false;
+            }
+        }
+        else {
+            System.out.println("Song List Is empty!!!");
+            return false;
+        }
     }
 
     @Override
@@ -84,7 +131,7 @@ public class SongDaoImpl implements IDao<Song>{
         if (!songList.isEmpty()){
             if (songList.containsKey(song.getSongLink())){
                 try{
-                     out= new ObjectOutputStream(new FileOutputStream(user_path));
+                    out= new ObjectOutputStream(new FileOutputStream(filePath));
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -125,7 +172,7 @@ public class SongDaoImpl implements IDao<Song>{
         else {filePath = admin_path;}
         ObjectInputStream in = null;
         try {
-             in= new ObjectInputStream(new FileInputStream(filePath));
+            in= new ObjectInputStream(new FileInputStream(filePath));
         } catch (IOException e) {
             Map<String,Song> songs = new HashMap<>();
             return songs;

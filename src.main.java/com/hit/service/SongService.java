@@ -32,6 +32,10 @@ public class SongService {
         return songDao.deleteSong(song,true);
     }
 
+    public boolean adminUpdateSong(String field, String updateVal, Song song) {
+        return songDao.updateSong(field,updateVal,song);
+    }
+
     public boolean adminDeleteSong(Song song) {
         return songDao.deleteSong(song,false);
     }

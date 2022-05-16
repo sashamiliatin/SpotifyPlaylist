@@ -9,7 +9,7 @@ public interface IDao <T> {
 
     List<Song> searchSongs(String searchVal, boolean user)throws Exception;
     boolean saveSong(T t,boolean user)throws Exception;
-    boolean updateSong(String songName, String updateVal, boolean user)throws Exception;
+    boolean updateSong(String field, String updateVal, Song song)throws Exception;
     boolean deleteSong(Song song,boolean user)throws Exception;
     Map<String,Song> getAllSongs(boolean user)throws Exception;
 }
