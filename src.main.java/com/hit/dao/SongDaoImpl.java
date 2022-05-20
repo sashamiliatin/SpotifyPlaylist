@@ -33,6 +33,13 @@ public class SongDaoImpl implements IDao<Song>{
         return songList;
     }
 
+    private synchronized void writeObject(ObjectOutputStream out,Map<String,Song> songList ) throws IOException {
+        out.writeObject(songList);
+    }
+    private synchronized Map<String,Song> readObject(ObjectInputStream in ) throws IOException, ClassNotFoundException {
+        return (Map<String, Song>) in.readObject();
+    }
+
     @Override
     public boolean saveSong(Song song,boolean user) throws IOException {
         String filePath = null;
@@ -51,7 +58,8 @@ public class SongDaoImpl implements IDao<Song>{
                 }
 
                 songList.put(song.getSongLink(), song);
-                out.writeObject(songList);
+//                out.writeObject(songList);
+                writeObject(out,songList);
                 out.close();
                 return true;
             }
@@ -63,7 +71,8 @@ public class SongDaoImpl implements IDao<Song>{
         else {
             songList.put(song.getSongLink(), song);
             out= new ObjectOutputStream(new FileOutputStream(filePath));
-            out.writeObject(songList);
+//            out.writeObject(songList);
+            writeObject(out,songList);
             out.close();
             return false;
         }
@@ -71,43 +80,47 @@ public class SongDaoImpl implements IDao<Song>{
 
 
     @Override
-    public boolean updateSong(String field, String updateVal, Song song) {
+    public boolean updateSong(String field, String updateVal, String songLink) {
 
         Map<String,Song> songList = getAllSongs(false);
         if (!songList.isEmpty()){
-            if (songList.containsKey(song.getSongLink())){
+            if (songList.containsKey(songLink)){
                 ObjectOutputStream out = null;
+                Song song = songList.get(songLink);
                 try {
+
                     out = new ObjectOutputStream(new FileOutputStream(admin_path));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 if (field == "Name"){
                     song.setSongName(updateVal);
-                    songList.put(song.getSongLink(),song);
+                    songList.put(songLink, song);
                 }
                 else if (field == "Artist") {
                     song.setSongArtist(updateVal);
-                    songList.put(song.getSongLink(),song);
+                    songList.put(songLink, song);
                 }
                 else if (field == "Genre") {
                     song.setSongGenre(updateVal);
-                    songList.put(song.getSongLink(),song);
+                    songList.put(songLink, song);
                 }
                 else if (field == "Link") {
-                    Song newSong = new Song(song.getSongName(),song.getSongArtist(),song.getSongGenre(),updateVal);
-                    songList.put(updateVal, newSong);
-                    songList.remove(song.getSongLink());
+                    song.setSongLink(updateVal);
+//                    Song newSong = new Song(songLink.getSongName(), songLink.getSongArtist(), songLink.getSongGenre(),updateVal);
+                    songList.put(updateVal, song);
+                    songList.remove(songLink);
                 }
 
                 try {
-                    out.writeObject(songList);
+//                    out.writeObject(songList);
+                    writeObject(out,songList);
                     out.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                System.out.println("Filed: "+field+", Of song: "+song.getSongName()+" updated successfully!");
+                System.out.println("Filed: "+field+", Of song: "+ song.getSongName()+" updated successfully!");
                 return true;
             }
             else {
@@ -122,35 +135,34 @@ public class SongDaoImpl implements IDao<Song>{
     }
 
     @Override
-    public boolean deleteSong(Song song, boolean user) {
+    public boolean deleteSong(String songLink, boolean user) {
         String filePath = null;
         if (user){filePath = user_path;}
         else {filePath = admin_path;}
         Map<String,Song> songList = getAllSongs(user);
         ObjectOutputStream out = null;
         if (!songList.isEmpty()){
-            if (songList.containsKey(song.getSongLink())){
+            if (songList.containsKey(songLink)){
+                Song song =songList.get(songLink);
                 try{
                     out= new ObjectOutputStream(new FileOutputStream(filePath));
 
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    return false;
                 } catch (IOException e) {
                     e.printStackTrace();
                     return false;
                 }
 
-                songList.remove(song.getSongLink());
+                songList.remove(songLink);
                 try {
-                    out.writeObject(songList);
+//                    out.writeObject(songList);
+                    writeObject(out,songList);
                     out.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                     return false;
                 }
 
-                System.out.println("Song: "+song.getSongName()+" Was deleted");
+                System.out.println("Song: "+ song.getSongName()+" Was deleted");
                 return true;
             }
             else {
@@ -174,13 +186,13 @@ public class SongDaoImpl implements IDao<Song>{
         try {
             in= new ObjectInputStream(new FileInputStream(filePath));
         } catch (IOException e) {
-            Map<String,Song> songs = new HashMap<>();
-            return songs;
+            return new HashMap<>();
         }
 
         Map<String,Song> songs = new HashMap<>();
         try {
-            songs = (Map<String,Song>)in.readObject();
+//            songs = (Map<String,Song>)in.readObject();
+            songs = readObject(in);
             in.close();
         } catch (IOException e) {
             try{

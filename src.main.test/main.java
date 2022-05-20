@@ -22,25 +22,25 @@ public class main {
 //        dao.saveSong(song1);
 //        dao.saveSong(song2);
         SongService service = new SongService();
-        service.userAddSong(song);
-        service.userAddSong(song1);
-        service.userAddSong(song2);
-        service.adminAddSong(song);
-        service.adminAddSong(song2);
-        songList = service.userSearchSong("sasha");
+        service.addSong(song ,true);
+        service.addSong(song1, true);
+        service.addSong(song2, true);
+        service.addSong(song, false);
+        service.addSong(song2,false);
+        songList = service.searchSong("sasha",true);
 //        songList =dao.searchSongs("Sasha");
         System.out.println(songList+"\n");
-        service.userDeleteSong(song);
+        service.deleteSong("LinkToSong",true);
 //        dao.deleteSong(song);
 //        System.out.println(dao.getAllSongs());
 //        System.out.println(service.);
 
-        service.adminUpdateSong("Name", "blablsa", song2);
-        System.out.println(service.adminGetAllSongs().values());
+        service.updateSong("Name", "blablsa", "LinkToSong2");
+        System.out.println(service.getAllSongs(false).values());
 
-        service.adminUpdateSong("Link", "1234", song2);
+        service.updateSong("Link", "1234", "LinkToSong2");
 
-        System.out.println(service.adminGetAllSongs().values());
+        System.out.println(service.getAllSongs(false).values());
 
 
     }

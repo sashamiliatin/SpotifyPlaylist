@@ -15,50 +15,27 @@ public class SongService {
     }
 
 
-    public List<Song> userSearchSong(String search) {
-        List<Song> songs = songDao.searchSongs(search,true);
-        if(songs.isEmpty())
-            return null;
-        return songs;
-    }
-    public List<Song> adminSearchSong(String search) {
-        List<Song> songs = songDao.searchSongs(search,false);
+    public List<Song> searchSong(String search,boolean user) {
+        List<Song> songs = songDao.searchSongs(search,user);
         if(songs.isEmpty())
             return null;
         return songs;
     }
 
-    public boolean userDeleteSong(Song song) {
-        return songDao.deleteSong(song,true);
+    public boolean deleteSong(String songLink, boolean user) {
+        return songDao.deleteSong(songLink,user);
     }
 
-    public boolean adminUpdateSong(String field, String updateVal, Song song) {
-        return songDao.updateSong(field,updateVal,song);
+    public boolean updateSong(String field, String updateVal, String songLink) {
+        return songDao.updateSong(field,updateVal,songLink);
     }
 
-    public boolean adminDeleteSong(Song song) {
-        return songDao.deleteSong(song,false);
+    public boolean addSong(Song song,boolean user) throws IOException {
+        return songDao.saveSong(song,user);
     }
 
-    public boolean userAddSong(Song song) throws IOException {
-        return songDao.saveSong(song,true);
+    public Map<String,Song> getAllSongs(boolean user){
+        return songDao.getAllSongs(user);
     }
 
-    public boolean adminAddSong(Song song) throws IOException {
-        return songDao.saveSong(song,false);
-    }
-
-    public Map<String,Song> userGetAllSongs(){
-        return songDao.getAllSongs(true);
-    }
-
-    public Map<String,Song> adminGetAllSongs(){
-        return songDao.getAllSongs(false);
-    }
-
-//    public boolean editSong(Song song) {
-//        if(book == null)
-//            return false;
-//        return bookDao.save(book);
-//    }
 }
