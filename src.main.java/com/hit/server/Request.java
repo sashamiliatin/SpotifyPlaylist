@@ -6,9 +6,9 @@ import java.util.Map;
 public class Request {
 
     private Map <String, String> headers;
-    private String body;
+    private Map <String, String> body;
 
-    public Request(Map<String, String> headers, String body) {
+    public Request(Map<String, String> headers, Map <String, String> body) {
         this.headers = headers;
         this.body = body;
     }
@@ -18,12 +18,12 @@ public class Request {
     }
 
 
-    public String getBody() {
+    public Map <String, String> getBody() {
         return body;
     }
 
 
-    public void setBody(String body) {
+    public void setBody(Map <String, String> body) {
         this.body = body;
     }
 

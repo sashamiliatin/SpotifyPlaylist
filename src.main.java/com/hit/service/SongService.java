@@ -4,6 +4,7 @@ import com.hit.dao.SongDaoImpl;
 import com.hit.dm.Song;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class SongService {
     public List<Song> searchSong(String search,boolean user) {
         List<Song> songs = songDao.searchSongs(search,user);
         if(songs.isEmpty())
-            return null;
+            return Collections.EMPTY_LIST;
         return songs;
     }
 

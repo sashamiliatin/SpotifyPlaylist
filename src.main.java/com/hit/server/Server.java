@@ -20,11 +20,13 @@ public class Server {
             try {
                 client = server.accept();
                 pool.execute(new HandleRequest(client));
+
 //                new Thread(new HandleRequest(client)).start();
             } catch (IOException e) {
                 System.out.println("tiered of waiting for connection :( ");
             }
         }
+        pool.shutdown();
         server.close();
     }
 }
