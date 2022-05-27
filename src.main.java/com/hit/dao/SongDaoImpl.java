@@ -10,6 +10,14 @@ public class SongDaoImpl implements IDao<Song>{
 
     private String user_path = "src.main.resources/Datasource.txt";
     private String admin_path = "src.main.resources/Datasource1.txt";
+
+    private synchronized void writeObject(ObjectOutputStream out,Map<String,Song> songList ) throws IOException {
+        out.writeObject(songList);
+    }
+    private synchronized Map<String,Song> readObject(ObjectInputStream in ) throws IOException, ClassNotFoundException {
+        return (Map<String, Song>) in.readObject();
+    }
+
     @Override
     public List<Song> searchSongs(String searchVal,boolean user) {
         String filePath = null;
@@ -19,7 +27,8 @@ public class SongDaoImpl implements IDao<Song>{
         List<Song> songList=new ArrayList<>();
         try {
             ObjectInputStream in= new ObjectInputStream(new FileInputStream(filePath));
-            Map<String,Song> songs = (Map<String,Song>)in.readObject();
+//            Map<String,Song> songs = (Map<String,Song>)in.readObject();
+            Map<String,Song> songs = readObject(in);
             in.close();
             if (!songs.isEmpty()){
                 songs.forEach((k,v)->{if (algo.search(v.toString(),searchVal)==1){songList.add(v);}});
@@ -33,12 +42,7 @@ public class SongDaoImpl implements IDao<Song>{
         return songList;
     }
 
-    private synchronized void writeObject(ObjectOutputStream out,Map<String,Song> songList ) throws IOException {
-        out.writeObject(songList);
-    }
-    private synchronized Map<String,Song> readObject(ObjectInputStream in ) throws IOException, ClassNotFoundException {
-        return (Map<String, Song>) in.readObject();
-    }
+
 
     @Override
     public boolean saveSong(Song song,boolean user) throws IOException {
