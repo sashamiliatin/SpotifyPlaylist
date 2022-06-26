@@ -8,8 +8,8 @@ import java.util.*;
 
 public class SongDaoImpl implements IDao<Song>{
 
-    private String user_path = "src.main.resources/Datasource.txt";
-    private String admin_path = "src.main.resources/Datasource1.txt";
+    private String user_path = "src.main.resources/UserDb.txt";
+    private String admin_path = "src.main.resources/AdminDb.txt";
 
     private synchronized void writeObject(ObjectOutputStream out,Map<String,Song> songList ) throws IOException {
         out.writeObject(songList);

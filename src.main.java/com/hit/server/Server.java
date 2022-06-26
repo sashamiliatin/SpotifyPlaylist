@@ -12,7 +12,7 @@ public class Server {
 
     public static void main(String[] args) throws Exception {
         ExecutorService pool = Executors.newFixedThreadPool(100);
-        ServerSocket server = new ServerSocket(3000);
+        ServerSocket server = new ServerSocket(6000);
         System.out.println("Server is alive");
         Socket client;
 
